@@ -7,7 +7,7 @@ const Reporting = () => {
             <div>Name: reporting_host_mf</div>
             <div>Framework: react</div>
             <div>Language: TypeScript</div>
-            <div>CSS: Empty CSS</div>
+            <div>Test testovic</div>
         </div>
     );
 };
