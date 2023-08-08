@@ -12,7 +12,7 @@ testing-code:
 build-job:
     stage: build
     image: 
-        name: docker:stable
+        name: docker:latest
     services:
         - name: docker:dind
           alias: thedockerhost
@@ -20,6 +20,26 @@ build-job:
         DOCKER_TLS_CERTDIR: ""
         DOCKER_HOST: tcp://thedockerhost:2375/
         DOCKER_DRIVER: overlay2
-
     script:
-        - docker build -t mainsiteimage1 ./MainSite
+        - docker compose build
+        - docker tag plenkyy/microfrontend-service1 plenkyy/microfrontend-service1:$CI_COMMIT_SHORT_SHA
+        - docker tag plenkyy/microfrontend-service2 plenkyy/microfrontend-service2:$CI_COMMIT_SHORT_SHA
+        - docker push plenkyy/microfrontend-service1:$CI_COMMIT_SHORT_SHA
+        - docker push plenkyy/microfrontend-service2:$CI_COMMIT_SHORT_SHA
+    before_script:
+        - docker login -u $DHUB_USER -p $DHUB_PASS
+
+deploy-job:
+    stage: deploy
+    image: 
+        name: docker:latest
+    services:
+        - name: docker:dind
+          alias: thedockerhostdeploy
+    variables:
+        DOCKER_TLS_CERTDIR: "" 
+        DOCKER_HOST: tcp://thedockerhostdeploy:2375/
+        DOCKER_DRIVER: overlay2
+    script:
+        - echo "Deploying"
+
