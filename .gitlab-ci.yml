@@ -1,0 +1,25 @@
+default:
+    tags:
+        - LN_01
+stages:
+    - testing
+    - build
+    - deploy
+testing-code:
+    stage: testing
+    script: 
+        - echo "Pokretanje unit testova"
+build-job:
+    stage: build
+    image: 
+        name: docker:stable
+    services:
+        - name: docker:dind
+          alias: thedockerhost
+    variables:
+        DOCKER_TLS_CERTDIR: ""
+        DOCKER_HOST: tcp://thedockerhost:2375/
+        DOCKER_DRIVER: overlay2
+
+    script:
+        - docker build -t mainsiteimage1 ./MainSite
