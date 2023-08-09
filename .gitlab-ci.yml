@@ -28,18 +28,16 @@ build-job:
         - docker push plenkyy/microfrontend-service2:$CI_COMMIT_SHORT_SHA
     before_script:
         - docker login -u $DHUB_USER -p $DHUB_PASS
-
+        
 deploy-job:
     stage: deploy
-    image: 
-        name: docker:latest
-    services:
-        - name: docker:dind
-          alias: thedockerhostdeploy
-    variables:
-        DOCKER_TLS_CERTDIR: "" 
-        DOCKER_HOST: tcp://thedockerhostdeploy:2375/
-        DOCKER_DRIVER: overlay2
+    before_script:
+        - chmod 400 $SSH_KEY
     script:
-        - echo "Deploying"
-
+        # SSH into the deploy VM, and then execute the Docker commands
+        - ssh -o StrictHostKeyChecking=no -i $SSH_KEY $VM_USER@$VM_HOST "
+            docker login -u $DHUB_USER -p $DHUB_PASS &&
+            docker ps -aq | xargs docker stop | xargs docker rm &&
+            docker run -d -p 8080:80 plenkyy/microfrontend-service1:$CI_COMMIT_SHORT_SHA &&
+            docker run -d -p 3050:80 plenkyy/microfrontend-service2:$CI_COMMIT_SHORT_SHA
+          "
