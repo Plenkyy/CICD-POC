@@ -10,5 +10,5 @@ jobs:
       uses: action/checkout@v3
     - name: Runing unit tests
       run: |
-        echo "Izvođenje unit testova"
+        echo "Izvođenje unit testova!"
       
