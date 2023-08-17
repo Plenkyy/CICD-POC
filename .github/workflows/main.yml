@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
-      uses: action/checout@v3
+      uses: action/checkout@v3
     - name: Runing unit tests
       run: |
         echo "Izvođenje unit testova"
