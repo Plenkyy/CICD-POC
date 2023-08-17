@@ -1,0 +1,14 @@
+name: Testiranje GitHub akcija CI/CD
+on:
+  push:
+    branches: main
+jobs:
+  checking-code:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: action/checout@v3
+    - name: Runing unit tests
+      run: |
+        echo "Izvođenje unit testova"
+      
