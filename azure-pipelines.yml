@@ -2,13 +2,15 @@ trigger:
 - master
 
 pool:
-    name: Default  # This specifies the agent pool.
+    name: Default
     demands: 
-    - agent.name -equals AzureDevOpsAgent  # This ensures the job runs on the agent named AzureDevOpsAgent.
+    - agent.name -equals AzureDevOpsAgent
 
 jobs:
   - job: BuildAndTest
     steps:
+    - checkout: self   # This ensures your repository is checked out on the agent.
+    
     - task: NodeTool@0
       inputs:
         versionSpec: '>=6.10.0'
@@ -16,15 +18,12 @@ jobs:
 
     - script: npm install
       displayName: 'Instaliranje dependencija'
-      
-    - script: cd CICD-POC
-      displayName: 'Geting into repo'
+      workingDirectory: './'  # Replace with your actual project path.
 
-    - script: echo 'npm test'
+    - script: npm test
       displayName: 'Pokretanje testova'
-    
-    - script: cd MainSite
-      displayName: 'Getting to MainSite folder'
-    
+      workingDirectory: './'
+
     - script: npm run build
-      displayName: 'Building MainSite'
+      displayName: 'Building project'
+      workingDirectory: './MainSite'  # If MainSite is a subdirectory.
