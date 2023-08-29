@@ -16,7 +16,7 @@ jobs:
         versionSpec: '>=6.10.0'
       displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
 
-    - script: npm install
+    - script: pwd && npm install
       displayName: 'Instaliranje dependencija'
       workingDirectory: '$(Pipeline.Workspace)/s/CICD-POC'  # Replace with your actual project path.
 
