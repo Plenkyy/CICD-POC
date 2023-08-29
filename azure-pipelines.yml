@@ -9,31 +9,50 @@ pool:
     - agent.name -equals AzureDevOpsAgent
 
 jobs:
-  - job: BuildAndTest
+  - job: CheckoutCode
+    displayName: 'Checkout Code'
     steps:
-    - checkout: self   # This ensures your repository is checked out on the agent.
-    
+    - checkout: self
+
+  - job: InstallNode
+    displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
+    dependsOn: CheckoutCode
+    steps:
     - task: NodeTool@0
       inputs:
         versionSpec: '>=6.10.0'
-      displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
-
+      
+  - job: InstallMainSiteDependencies
+    displayName: 'Instaliranje dependencija'
+    dependsOn: InstallNode
+    steps:
     - script: npm install
-      displayName: 'Instaliranje dependencija'
       workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
+  - job: RunMainSiteTests
+    displayName: 'Pokretanje testova'
+    dependsOn: InstallMainSiteDependencies
+    steps:
     - script: echo 'Pokretanje unit testova na MainSite-u'
-      displayName: 'Pokretanje testova'
       workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
-
+      
+  - job: BuildMainSite
+    displayName: 'Building project'
+    dependsOn: RunMainSiteTests
+    steps:
     - script: npm run build
-      displayName: 'Building project'
       workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
+  - job: InstallReportingDependencies
+    displayName: 'Installing dependencies'
+    dependsOn: BuildMainSite
+    steps:
     - script: npm install
-      displayName: 'Installing dependencies'
-      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
-    - script: npm build
-      displayName: 'Building reporting host mf'
       workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
 
+  - job: BuildReportingHost
+    displayName: 'Building reporting host mf'
+    dependsOn: InstallReportingDependencies
+    steps:
+    - script: npm run build
+      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
