@@ -4,55 +4,36 @@ pr:
     - main
 
 pool:
-    name: Default
-    demands: 
-    - agent.name -equals AzureDevOpsAgent
+  name: Default
+  demands: 
+  - agent.name -equals AzureDevOpsAgent
 
 jobs:
-  - job: CheckoutCode
-    displayName: 'Checkout Code'
+  - job: BuildAndDeploy
     steps:
-    - checkout: self
-
-  - job: InstallNode
-    displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
-    dependsOn: CheckoutCode
-    steps:
+    - checkout: self  
+    
     - task: NodeTool@0
       inputs:
         versionSpec: '>=6.10.0'
-      
-  - job: InstallMainSiteDependencies
-    displayName: 'Instaliranje dependencija'
-    dependsOn: InstallNode
-    steps:
+      displayName: 'Install Node.js'
+    
     - script: npm install
+      displayName: 'Install dependencies for MainSite'
+      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+      
+    - script: echo 'Running unit tests on MainSite'
+      displayName: 'Run tests'
       workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
-  - job: RunMainSiteTests
-    displayName: 'Pokretanje testova'
-    dependsOn: InstallMainSiteDependencies
-    steps:
-    - script: echo 'Pokretanje unit testova na MainSite-u'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
-      
-  - job: BuildMainSite
-    displayName: 'Building project'
-    dependsOn: RunMainSiteTests
-    steps:
     - script: npm run build
+      displayName: 'Build MainSite project'
       workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
-  - job: InstallReportingDependencies
-    displayName: 'Installing dependencies'
-    dependsOn: BuildMainSite
-    steps:
     - script: npm install
+      displayName: 'Install dependencies for reporting_host_mf'
       workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
-
-  - job: BuildReportingHost
-    displayName: 'Building reporting host mf'
-    dependsOn: InstallReportingDependencies
-    steps:
+    
     - script: npm run build
+      displayName: 'Build reporting_host_mf'
       workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
