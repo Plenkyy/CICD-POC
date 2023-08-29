@@ -1,0 +1,27 @@
+trigger: 
+- master
+
+pool:
+    name: Default  # This specifies the agent pool.
+    demands: 
+    - agent.name -equals AzureDevOpsAgent  # This ensures the job runs on the agent named AzureDevOpsAgent.
+
+jobs:
+  - job: BuildAndTest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '>=6.10.0'
+      displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
+
+    - script: npm install
+      displayName: 'Instaliranje dependencija'
+    
+    - script: echo 'npm test'
+      displayName: 'Pokretanje testova'
+    
+    - script: cd MainSite
+      displayName: 'Getting to MainSite folder'
+    
+    - script: npm run build
+      displayName: 'Building MainSite'
