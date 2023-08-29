@@ -18,12 +18,12 @@ jobs:
 
     - script: npm install
       displayName: 'Instaliranje dependencija'
-      workingDirectory: './'  # Replace with your actual project path.
+      workingDirectory: '$(Pipeline.Workspace)/s/CICD-POC'  # Replace with your actual project path.
 
     - script: npm test
       displayName: 'Pokretanje testova'
-      workingDirectory: './'
+      workingDirectory: '$(Pipeline.Workspace)/s/CICD-POC'
 
     - script: npm run build
       displayName: 'Building project'
-      workingDirectory: './MainSite'  # If MainSite is a subdirectory.
+      workingDirectory: '$(Pipeline.Workspace)/s/./MainSite'  # If MainSite is a subdirectory.
