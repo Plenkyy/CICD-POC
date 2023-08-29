@@ -16,9 +16,9 @@ jobs:
         versionSpec: '>=6.10.0'
       displayName: 'Instalacija Node.js packeta na Ubuntu mašinu'
 
-    - script: pwd && npm install
+    - script: npm install
       displayName: 'Instaliranje dependencija'
-      workingDirectory: '$(Pipeline.Workspace)/s'
+      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
     - script: echo 'Pokretanje unit testova na MainSite-u'
       displayName: 'Pokretanje testova'
