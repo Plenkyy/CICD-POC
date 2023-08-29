@@ -1,5 +1,7 @@
-trigger: 
-- master
+pr:
+  branches:
+    include:
+    - main
 
 pool:
     name: Default
@@ -26,4 +28,12 @@ jobs:
 
     - script: npm run build
       displayName: 'Building project'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+      workingDirectory: '$(Pipeline.Workspace)/s/MainSit'
+
+    - script: npm install
+      displayName: 'Installing dependencies'
+      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+    - script: npm build
+      displayName: 'Building reporting host mf'
+      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+
