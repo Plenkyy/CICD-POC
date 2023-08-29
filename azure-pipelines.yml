@@ -28,7 +28,7 @@ jobs:
 
     - script: npm run build
       displayName: 'Building project'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSit'
+      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
     - script: npm install
       displayName: 'Installing dependencies'
