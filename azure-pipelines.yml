@@ -16,7 +16,10 @@ jobs:
 
     - script: npm install
       displayName: 'Instaliranje dependencija'
-    
+      
+    - script: cd CICD-POC
+      displayName: 'Geting into repo'
+
     - script: echo 'npm test'
       displayName: 'Pokretanje testova'
     
