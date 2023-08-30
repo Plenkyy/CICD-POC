@@ -37,3 +37,11 @@ jobs:
     - script: npm run build
       displayName: 'Build reporting_host_mf'
       workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+  
+  - job: BuildImages
+    steps:
+    - task: Docker@2
+      inputs:
+        command: 'buildAndPush'
+        Dockerfile: '$(Pipeline.Workspace)/MainSite/Dockerfile'
+
