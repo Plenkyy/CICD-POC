@@ -39,6 +39,8 @@ jobs:
       workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
   
   - job: BuildImages
+    dependsOn: BuildAndDeploy
+    condition: succeeded('BuildAndDeploy')
     steps:
     - task: Docker@2
       inputs:
