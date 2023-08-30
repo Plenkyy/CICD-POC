@@ -42,6 +42,8 @@ jobs:
     steps:
     - task: Docker@2
       inputs:
+        containerRegistry: 'Docker hub'
+        repository: 'plenkyy / microfrontend-service1'
         command: 'buildAndPush'
-        Dockerfile: '$(Pipeline.Workspace)/MainSite/Dockerfile'
+        Dockerfile: '$(Pipeline.Workspace)/s/MainSite/Dockerfile'
 
