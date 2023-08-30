@@ -51,7 +51,7 @@ stages:
           command: 'buildAndPush'
           Dockerfile: '$(Pipeline.Workspace)/s/MainSite/Dockerfile'
 
-      - script: docker system prune -f
+      - script: docker system prune -a -f
         displayName: 'Deleting unused data'
       - task: Docker@2
         inputs:
@@ -59,6 +59,6 @@ stages:
           repository: 'plenkyy/microfrontend-service2'
           command: 'buildAndPush'
           Dockerfile: '$(Pipeline.Workspace)/s/reporting_host_mf/Dockerfile'
-      - script: docker system prune -f
+      - script: docker image prune -a -f
         displayName: 'Deleting unused data'      
 
