@@ -48,4 +48,11 @@ jobs:
         repository: 'plenkyy/microfrontend-service1'
         command: 'buildAndPush'
         Dockerfile: '$(Pipeline.Workspace)/s/MainSite/Dockerfile'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker hub'
+        repository: 'plenky/microfrontend-service2'
+        command: 'buildAndPush'
+        Dockerfile: '$(Pipeline.Workspace)/s/reporting_host_mf'
+    
 
