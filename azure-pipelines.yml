@@ -7,52 +7,54 @@ pool:
   name: Default
   demands: 
   - agent.name -equals AzureDevOpsAgent
-
-jobs:
-  - job: BuildAndDeploy
-    steps:
-    - checkout: self  
-    
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '>=6.10.0'
-      displayName: 'Install Node.js'
-    
-    - script: npm install
-      displayName: 'Install dependencies for MainSite'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+stages:
+- stage: Build
+  jobs:
+    - job: BuildAndDeploy
+      steps:
+      - checkout: self  
       
-    - script: echo 'Running unit tests on MainSite'
-      displayName: 'Run tests'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '>=6.10.0'
+        displayName: 'Install Node.js'
+      
+      - script: npm install
+        displayName: 'Install dependencies for MainSite'
+        workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+        
+      - script: echo 'Running unit tests on MainSite'
+        displayName: 'Run tests'
+        workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
-    - script: npm run build
-      displayName: 'Build MainSite project'
-      workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+      - script: npm run build
+        displayName: 'Build MainSite project'
+        workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
 
-    - script: npm install
-      displayName: 'Install dependencies for reporting_host_mf'
-      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
-    
-    - script: npm run build
-      displayName: 'Build reporting_host_mf'
-      workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
-  
-  - job: BuildImages
-    dependsOn: BuildAndDeploy
-    condition: succeeded('BuildAndDeploy')
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker hub'
-        repository: 'plenkyy/microfrontend-service1'
-        command: 'buildAndPush'
-        Dockerfile: '$(Pipeline.Workspace)/s/MainSite/Dockerfile'
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker hub'
-        repository: 'plenky/microfrontend-service2'
-        command: 'buildAndPush'
-        Dockerfile: '$(Pipeline.Workspace)/s/reporting_host_mf'
-    
+      - script: npm install
+        displayName: 'Install dependencies for reporting_host_mf'
+        workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+      
+      - script: npm run build
+        displayName: 'Build reporting_host_mf'
+        workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+- stage: Dockerization
+  jobs:
+    - job: BuildImages
+      dependsOn: BuildAndDeploy
+      condition: succeeded('BuildAndDeploy')
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker hub'
+          repository: 'plenkyy/microfrontend-service1'
+          command: 'buildAndPush'
+          Dockerfile: '$(Pipeline.Workspace)/s/MainSite/Dockerfile'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker hub'
+          repository: 'plenky/microfrontend-service2'
+          command: 'buildAndPush'
+          Dockerfile: '$(Pipeline.Workspace)/s/reporting_host_mf/Dockerfile'
+      
 
