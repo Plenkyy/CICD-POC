@@ -39,10 +39,10 @@ stages:
         displayName: 'Build reporting_host_mf'
         workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
 - stage: Dockerization
+  dependsOn: 'Build'
+  condition: succeeded('Build')
   jobs:
     - job: BuildImages
-      dependsOn: BuildAndDeploy
-      condition: succeeded('BuildAndDeploy')
       steps:
       - task: Docker@2
         inputs:
