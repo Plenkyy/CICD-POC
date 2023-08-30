@@ -53,7 +53,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'Docker hub'
-          repository: 'plenky/microfrontend-service2'
+          repository: 'plenkyy/microfrontend-service2'
           command: 'buildAndPush'
           Dockerfile: '$(Pipeline.Workspace)/s/reporting_host_mf/Dockerfile'
       
