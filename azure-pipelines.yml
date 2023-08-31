@@ -6,7 +6,7 @@ pr:
 pool:
   name: Default
   demands: 
-  - agent.name -equals AzureDevOpsAgent
+  - agent.name -equals razno
 stages:
 - stage: Build
   jobs:
