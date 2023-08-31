@@ -43,9 +43,9 @@ stages:
       - task: UniversalPackages@0
         inputs:
           command: 'publish'
-          publishDirectory: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
+          publishDirectory: '$(Pipeline.Workspace)/s/MainSite/'
           vstsFeedPublish: 'ReactProject/frontend'
-          vstsFeedPackagePublish: 'MainSitePackage'
+          vstsFeedPackagePublish: 'mainsitepackage'
           packagePublishDescription: 'Build output of MainSite'
 
       - script: npm install
