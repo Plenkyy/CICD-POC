@@ -36,8 +36,8 @@ stages:
         inputs:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/MainSite/dist'
           includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.zip'
+          archiveType: 'tar'
+          archiveFile: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
           replaceExistingArchive: true
 
       - task: UniversalPackages@0
