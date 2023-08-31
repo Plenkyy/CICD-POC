@@ -30,6 +30,18 @@ stages:
       - script: npm run build
         displayName: 'Build MainSite project'
         workingDirectory: '$(Pipeline.Workspace)/s/MainSite'
+        
+
+      - script: zip -r MainSiteBuildOutput.zip $(Pipeline.Workspace)/s/MainSite/dist
+        displayName: 'Zip Build Output'
+
+      - task: UniversalPackages@0
+        inputs:
+          command: 'publish'
+          publishDirectory: '$(Pipeline.Workspace)/s/MainSite' 
+          vstsFeedPublish: 'Proba29/frontend'
+          vstsFeedPackagePublish: 'MainSitePackage'
+          packagePublishDescription: 'Build output of MainSite'
 
       - script: npm install
         displayName: 'Install dependencies for reporting_host_mf'
@@ -38,6 +50,7 @@ stages:
       - script: npm run build
         displayName: 'Build reporting_host_mf'
         workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+
 - stage: Dockerization
   dependsOn: 'Build'
   condition: succeeded('Build')
