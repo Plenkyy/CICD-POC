@@ -57,7 +57,7 @@ stages:
         workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)/s/reporting_host_mf'
+          rootFolderOrFile: '$(Pipeline.Workspace)/s/reporting_host_mf/dist'
           includeRootFolder: true
           archiveType: 'tar'
           archiveFile: '$(Pipeline.Workspace)/s/reporting_host_mf/ReportingSite.tar.gz'
