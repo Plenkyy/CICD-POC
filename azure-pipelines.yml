@@ -55,7 +55,22 @@ stages:
       - script: npm run build
         displayName: 'Build reporting_host_mf'
         workingDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)/s/reporting_host_mf'
+          includeRootFolder: true
+          archiveType: 'tar'
+          archiveFile: '$(Pipeline.Workspace)/s/reporting_host_mf/ReportingSite.tar.gz'
+          replaceExistingArchive: true
 
+      - task: UniversalPackages@0
+        inputs:
+          command: publish
+          publishDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf/'
+          vstsFeedPublish: 'ReactProject/frontend'
+          vstsFeedPackagePublish: 'reportingsite'
+          packagePublishDescription: 'Build output of reporting site'
+        
 - stage: Dockerization
   dependsOn: 'Build'
   condition: succeeded('Build')
