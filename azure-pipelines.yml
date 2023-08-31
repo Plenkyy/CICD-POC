@@ -43,7 +43,7 @@ stages:
       - task: UniversalPackages@0
         inputs:
           command: 'publish'
-          publishDirectory: '$(Pipeline.Workspace)/s/MainSite' 
+          publishDirectory: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
           vstsFeedPublish: 'Proba29/frontend'
           vstsFeedPackagePublish: 'MainSitePackage'
           packagePublishDescription: 'Build output of MainSite'
