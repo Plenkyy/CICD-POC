@@ -43,7 +43,7 @@ stages:
       - task: CopyFilesOverSSH@0
         inputs:
           sshEndpoint: 'deploytovm'
-          sourceFolder: '''$(Pipeline.Workspace)/s/MainSite/dist'
+          sourceFolder: '$(Pipeline.Workspace)/s/MainSite/dist'
           contents: '**'
           targetFolder: '/var/www/mainsite'
           readyTimeout: '20000'
