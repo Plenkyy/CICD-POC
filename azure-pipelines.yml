@@ -46,10 +46,11 @@ stages:
       - task: CopyFilesOverSSH@0
         inputs:
           sshEndpoint: 'deploytovm'
-          sourceFolder: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
-          contents: '**'
+          sourceFolder: '$(Pipeline.Workspace)/s/MainSite/'
+          contents: 'MainSiteBuildOutput.tar.gz'
           targetFolder: '/var/www/'
           readyTimeout: '20000'
+
       - task: SSH@0
         inputs:
           sshEndpoint: 'deploytovm'
