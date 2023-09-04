@@ -40,12 +40,21 @@ stages:
           archiveFile: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
           replaceExistingArchive: true
 
+      - script: sudo rm -rf /var/www/mainsite/* > /dev/null 2>&1
+        displayName: 'Deliting old folder'
+    
       - task: CopyFilesOverSSH@0
         inputs:
           sshEndpoint: 'deploytovm'
-          sourceFolder: '$(Pipeline.Workspace)/s/MainSite/dist'
+          sourceFolder: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
           contents: '**'
-          targetFolder: '/var/www/mainsite'
+          targetFolder: '/var/www/'
+          readyTimeout: '20000'
+      - task: SSH@0
+        inputs:
+          sshEndpoint: 'deploytovm'
+          runOptions: 'commands'
+          commands: 'cd /var/www/;tar –xvzf /var/ww/MainSiteBuildOutput.tar.gz -c /var/www/mainsite'
           readyTimeout: '20000'
 
       
