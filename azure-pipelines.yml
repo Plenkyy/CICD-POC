@@ -37,7 +37,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)/s/MainSite/dist'
           includeRootFolder: false
           archiveType: 'tar'
-          archiveFile: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
+          archiveFile: '$(Pipeline.Workspace)/s/MainSite/ReportingSite.tar.gz'
           replaceExistingArchive: true
 
       - script: sudo rm -rf /var/www/mainsite/* > /dev/null 2>&1
@@ -47,7 +47,7 @@ stages:
         inputs:
           sshEndpoint: 'deploytovm'
           sourceFolder: '$(Pipeline.Workspace)/s/MainSite/'
-          contents: 'MainSiteBuildOutput.tar.gz'
+          contents: 'ReportingSite.tar.gz'
           targetFolder: '/var/www/'
           readyTimeout: '20000'
 
@@ -55,7 +55,7 @@ stages:
         inputs:
           sshEndpoint: 'deploytovm'
           runOptions: 'commands'
-          commands: 'sudo tar -xvzf /var/www/MainSiteBuildOutput.tar.gz -C /var/www/mainsite'
+          commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/mainsite'
           readyTimeout: '20000'
 
       
@@ -81,6 +81,24 @@ stages:
           archiveType: 'tar'
           archiveFile: '$(Pipeline.Workspace)/s/reporting_host_mf/ReportingSite.tar.gz'
           replaceExistingArchive: true
+
+      - script: sudo rm -rf /var/www/reporting_host_mf/* > /dev/null 2>&1
+        displayName: 'Deliting old folder'
+    
+      - task: CopyFilesOverSSH@0
+        inputs:
+          sshEndpoint: 'deploytovm'
+          sourceFolder: '$(Pipeline.Workspace)/s/reporting_host_mf/'
+          contents: 'ReportingSite.tar.gz'
+          targetFolder: '/var/www/'
+          readyTimeout: '20000'
+
+      - task: SSH@0
+        inputs:
+          sshEndpoint: 'deploytovm'
+          runOptions: 'commands'
+          commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/reporting_host_mf'
+          readyTimeout: '20000'
 
       - task: UniversalPackages@0
         inputs:
