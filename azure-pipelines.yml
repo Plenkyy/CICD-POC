@@ -40,6 +40,15 @@ stages:
           archiveFile: '$(Pipeline.Workspace)/s/MainSite/MainSiteBuildOutput.tar.gz'
           replaceExistingArchive: true
 
+      - task: CopyFilesOverSSH@0
+        inputs:
+          sshEndpoint: 'deploytovm'
+          sourceFolder: '''$(Pipeline.Workspace)/s/MainSite/dist'
+          contents: '**'
+          targetFolder: '/var/www'
+          readyTimeout: '20000'
+
+      
       - task: UniversalPackages@0
         inputs:
           command: 'publish'
