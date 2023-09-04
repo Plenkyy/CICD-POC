@@ -55,7 +55,7 @@ stages:
         inputs:
           sshEndpoint: 'deploytovm'
           runOptions: 'commands'
-          commands: 'sudo tar –xvzf /var/www/MainSiteBuildOutput.tar.gz -c /var/www/mainsite'
+          commands: 'sudo tar –xvzf /var/www/MainSiteBuildOutput.tar.gz -C /var/www/mainsite'
           readyTimeout: '20000'
 
       
