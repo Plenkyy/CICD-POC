@@ -97,7 +97,7 @@ stages:
         inputs:
           sshEndpoint: 'deploytovm'
           runOptions: 'commands'
-          commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/reporting_host_mf'
+          commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/report'
           readyTimeout: '20000'
 
       - task: UniversalPackages@0
