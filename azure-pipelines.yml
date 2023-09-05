@@ -58,14 +58,6 @@ stages:
           commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/mainsite'
           readyTimeout: '20000'
 
-      
-      - task: UniversalPackages@0
-        inputs:
-          command: 'publish'
-          publishDirectory: '$(Pipeline.Workspace)/s/MainSite/'
-          vstsFeedPublish: 'ReactProject/frontend'
-          vstsFeedPackagePublish: 'mainsitepackage'
-          packagePublishDescription: 'Build output of MainSite'
 
       - script: npm install
         displayName: 'Install dependencies for reporting_host_mf'
@@ -99,14 +91,6 @@ stages:
           runOptions: 'commands'
           commands: 'sudo tar -xvzf /var/www/ReportingSite.tar.gz -C /var/www/report'
           readyTimeout: '20000'
-
-      - task: UniversalPackages@0
-        inputs:
-          command: publish
-          publishDirectory: '$(Pipeline.Workspace)/s/reporting_host_mf/'
-          vstsFeedPublish: 'ReactProject/frontend'
-          vstsFeedPackagePublish: 'reportingsite'
-          packagePublishDescription: 'Build output of reporting site'
         
 - stage: Dockerization
   dependsOn: 'Build'
